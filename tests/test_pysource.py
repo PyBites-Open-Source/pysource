@@ -1,3 +1,4 @@
+import collections
 from inspect import getsource
 from os.path import join
 from pathlib import PurePath
@@ -13,6 +14,7 @@ from src import get_callable, print_source
     ("random.sample", sample),
     ("pathlib.PurePath", PurePath),
     ("os.path.join", join),
+    ("collections", collections),
 ])
 def test_get_callable(arg, expected):
     assert get_callable(arg) is expected
