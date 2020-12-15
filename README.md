@@ -16,10 +16,13 @@ You can use `pybites-pysource`:
 
 1. From the command line
 
-		$ pysource -m pathlib.PurePath
-        ...
+		$ pysource -m re.match
+		def match(pattern, string, flags=0):
+			"""Try to apply the pattern at the start of the string, returning
+			a Match object, or None if no match was found."""
+			return _compile(pattern, flags).match(string)
 
-        To show the resulting code with paging call it with `-p`.
+	To show the resulting code with paging call `pysource` with `-p`.
 
 2. From within Vim by selecting a `module.callable` adding this to your `.vimrc`:
 
