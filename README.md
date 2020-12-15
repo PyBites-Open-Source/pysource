@@ -26,7 +26,7 @@ You can use `pybites-pysource`:
 
 2. From within Vim by selecting a `module.callable` adding this to your `.vimrc`:
 
-        `autocmd FileType python map <leader>py :exec '!python3.9 $HOME/bin/pysource.py -m <C-R><C-A> -p'<CR>`
+		autocmd FileType python map <leader>py :exec '!python3.9 $HOME/bin/pysource.py -m <C-R><C-A> -p'<CR>
 
 Check out [our blog post](https://pybit.es/get-python-source.html) for a demo.
 
