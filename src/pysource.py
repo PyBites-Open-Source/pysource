@@ -3,7 +3,7 @@ import inspect
 import pydoc
 
 
-def get_callable(arg):
+def get_object(arg):
     module_str, sep, name = arg.rpartition(".")
     if sep:
         module = importlib.import_module(module_str)

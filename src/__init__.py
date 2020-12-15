@@ -1,1 +1,1 @@
-from src.pysource import get_callable, print_source
+from src.pysource import get_object, print_source

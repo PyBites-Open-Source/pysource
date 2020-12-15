@@ -7,7 +7,7 @@ from random import sample, choice
 
 import pytest
 
-from src import get_callable, print_source
+from src import get_object, print_source
 
 
 @pytest.mark.parametrize("arg, expected", [
@@ -16,8 +16,8 @@ from src import get_callable, print_source
     ("os.path.join", join),
     ("collections", collections),
 ])
-def test_get_callable(arg, expected):
-    assert get_callable(arg) is expected
+def test_get_object(arg, expected):
+    assert get_object(arg) is expected
 
 
 @pytest.mark.parametrize("func", [

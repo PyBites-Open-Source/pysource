@@ -1,6 +1,6 @@
 import argparse
 
-from src.pysource import get_callable, print_source
+from src.pysource import get_object, print_source
 
 
 def main():
@@ -11,8 +11,8 @@ def main():
                         help='page output (like Unix more command)')
     args = parser.parse_args()
 
-    func = get_callable(args.module)
-    print_source(func, pager=args.use_pager)
+    obj = get_object(args.module)
+    print_source(obj, pager=args.use_pager)
 
 
 if __name__ == '__main__':
