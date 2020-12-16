@@ -1,3 +1,4 @@
+import collections
 from inspect import getsource
 from os.path import join
 from pathlib import PurePath
@@ -6,16 +7,17 @@ from random import sample, choice
 
 import pytest
 
-from src import get_callable, print_source
+from src import get_object, print_source
 
 
 @pytest.mark.parametrize("arg, expected", [
     ("random.sample", sample),
     ("pathlib.PurePath", PurePath),
     ("os.path.join", join),
+    ("collections", collections),
 ])
-def test_get_callable(arg, expected):
-    assert get_callable(arg) is expected
+def test_get_object(arg, expected):
+    assert get_object(arg) is expected
 
 
 @pytest.mark.parametrize("func", [
