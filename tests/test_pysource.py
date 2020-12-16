@@ -9,7 +9,7 @@ import this
 
 import pytest
 
-from src import get_object, print_source
+from pysource import get_object, print_source
 
 
 @pytest.mark.parametrize("arg, expected", [

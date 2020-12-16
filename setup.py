@@ -19,13 +19,13 @@ setup(
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.9",
     ],
-    packages=["src"],
+    packages=["pysource"],
     include_package_data=True,
     setup_requires=['pytest-runner'],
     tests_require=['pytest'],
     entry_points={
         "console_scripts": [
-            "pysource=src.__main__:main",
+            "pysource=pysource.__main__:main",
         ]
     },
 )

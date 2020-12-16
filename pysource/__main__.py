@@ -1,6 +1,6 @@
 import argparse
 
-from src.pysource import get_object, print_source
+from pysource.pysource import get_object, print_source
 
 
 def main():
