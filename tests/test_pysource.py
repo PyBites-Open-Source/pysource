@@ -4,6 +4,8 @@ from os.path import join
 from pathlib import PurePath
 from re import match
 from random import sample, choice
+from string import capwords
+import this
 
 import pytest
 
@@ -24,6 +26,8 @@ def test_get_object(arg, expected):
     choice,
     match,
     getsource,
+    capwords,
+    this  # works for modules now too
 ])
 def test_print_source(func, capfd, source_code):
     """pager=True gives the same result in terms of output"""
