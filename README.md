@@ -36,7 +36,7 @@ To run the tests:
 
 	$ python setup.py test
 
-See: [Integrating with setuptools / python setup.py test / pytest-runner](https://docs.pytest.org/en/3.0.2/goodpractices.html#integrating-with-setuptools-python-setup-py-test-pytest-runner).
+See: [Integrating with setuptools / python setup.py test / pytest-runner](https://docs.pytest.org/en/documentation-restructure/background/goodpractices.html#integrating-with-setuptools-python-setup-py-test-pytest-runner).
 
 ---
 
