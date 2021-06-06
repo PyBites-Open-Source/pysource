@@ -8,27 +8,35 @@ You can install `pybites-pysource` from [PyPI](https://pypi.org/project/pybites-
 
     pip install pybites-pysource
 
+Or use `pipx` if you want to have it available globally.
+
 This tool uses Python 3.x
 
 ## Usage
 
 You can use `pybites-pysource`:
 
-1. From the command line
+```
+$ pysource -m re.match
+def match(pattern, string, flags=0):
+	"""Try to apply the pattern at the start of the string, returning
+	a Match object, or None if no match was found."""
+	return _compile(pattern, flags).match(string)
+```
 
-		$ pysource -m re.match
-		def match(pattern, string, flags=0):
-			"""Try to apply the pattern at the start of the string, returning
-			a Match object, or None if no match was found."""
-			return _compile(pattern, flags).match(string)
-
-	To show the resulting code with paging call `pysource` with `-p`.
-
-2. From within Vim by selecting a `module.callable` adding this to your `.vimrc`:
-
-		autocmd FileType python map <leader>py :exec '!python3.9 $HOME/bin/pysource.py -m <C-R><C-A> -p'<CR>
+To show the resulting code with paging add `-p` to the `pysource` command, so in this case: `pysource -m re.match -p`.
 
 Check out [our blog post](https://pybit.es/get-python-source.html) for a demo.
+
+### Vim integration
+
+If you want to dump `pysource`'s output to a vertical split window I recommend installing [`ConqueTerm`](https://github.com/gingerhot/conque-term-vim) and then add this to your `.vimrc`:
+
+```
+nmap <leader>s :ConqueTermVSplit pysource -m <C-R><C-A><CR>
+```
+
+Now if you hit `<leader>s` (`,s` in my case as my Vim _leader_ key is `,`) on any object, it will open a split window with the source code (if it can be found, otherwise you will see a `ModuleNotFoundError`).
 
 ## Tests
 
