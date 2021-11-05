@@ -2,7 +2,7 @@
 
 A command line tool to read Python source code.
 
-_Update 5th of Nov 2021: we did not know it at the time, but this actually can be accomplished by Python's `inspect` module! So you might want to use that over this tool, for more info see [this Twitter thread](https://twitter.com/bbelderbos/status/1456234396810362885).
+_Update 5th of Nov 2021_: we did not know it at the time, but this actually can be accomplished by Python's `inspect` module! So you might want to use that over this tool, for more info see [this Twitter thread](https://twitter.com/bbelderbos/status/1456234396810362885).
 
 
 ## Installation
