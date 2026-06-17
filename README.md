@@ -23,24 +23,52 @@ This tool requires Python 3.12+.
 
 ## Usage
 
+Pass any importable object as `module(.submodule).name` with `-m`.
+
+**A function:**
+
 ```
 $ pysource -m re.match
 def match(pattern, string, flags=0):
-	"""Try to apply the pattern at the start of the string, returning
-	a Match object, or None if no match was found."""
-	return _compile(pattern, flags).match(string)
+    """Try to apply the pattern at the start of the string, returning
+    a Match object, or None if no match was found."""
+    return _compile(pattern, flags).match(string)
 ```
 
-It also resolves C-implemented stdlib objects by falling back to their pure-Python source:
+**A class:**
 
 ```
-$ pysource -m datetime.date
-class date:
-    """Concrete date type.
+$ pysource -m argparse.ArgumentParser
+class ArgumentParser(_AttributeHolder, _ActionsContainer):
+    """Object for parsing command line strings into Python objects.
     ...
 ```
 
-To show the resulting code with paging add `-p` to the `pysource` command, so in this case: `pysource -m re.match -p`.
+**A whole module** (omit the trailing name):
+
+```
+$ pysource -m string
+"""A collection of string constants.
+...
+```
+
+**A C-implemented stdlib object** — `pysource` falls back to the pure-Python source (`datetime`, `decimal`, `io`):
+
+```
+$ pysource -m decimal.Decimal
+class Decimal(object):
+    """Floating-point class for decimal arithmetic."""
+    ...
+```
+
+**No source available** — when an object is implemented in C with no Python equivalent, you get a clear message (and a non-zero exit code) instead of a traceback:
+
+```
+$ pysource -m builtins.len
+no Python source available for 'len' (likely implemented in C / a builtin)
+```
+
+**Paging** — add `-p` (or `--pager`) to page long output, e.g. `pysource -m argparse.ArgumentParser -p`.
 
 Check out [our blog post](https://pybit.es/get-python-source.html) for a demo.
 
