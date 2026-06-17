@@ -93,3 +93,18 @@ def test_main_exits_with_friendly_error(monkeypatch):
     with pytest.raises(SystemExit) as exc:
         main()
     assert "no Python source available" in str(exc.value)
+
+
+@pytest.mark.parametrize("arg", ["str.maketrans", "dict.fromkeys", "nosuchmodule"])
+def test_main_exits_when_module_not_found(monkeypatch, arg):
+    monkeypatch.setattr(sys, "argv", ["pysource", "-m", arg])
+    with pytest.raises(SystemExit) as exc:
+        main()
+    assert f"could not resolve {arg!r}" in str(exc.value)
+
+
+def test_main_exits_when_attribute_missing(monkeypatch):
+    monkeypatch.setattr(sys, "argv", ["pysource", "-m", "re.nope"])
+    with pytest.raises(SystemExit) as exc:
+        main()
+    assert "could not resolve 're.nope'" in str(exc.value)

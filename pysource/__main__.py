@@ -21,6 +21,8 @@ def main():
     try:
         obj = get_object(args.module)
         print_source(obj, pager=args.use_pager)
+    except (ImportError, AttributeError) as exc:
+        sys.exit(f"could not resolve {args.module!r}: {exc}")
     except SourceUnavailableError as exc:
         sys.exit(str(exc))
 
