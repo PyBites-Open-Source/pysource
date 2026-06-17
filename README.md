@@ -72,15 +72,19 @@ no Python source available for 'len' (likely implemented in C / a builtin)
 
 Check out [our blog post](https://pybit.es/get-python-source.html) for a demo.
 
+### Pipe into your editor
+
+Since `pysource` writes to stdout, you can pipe it straight into Vim (the `-` reads from stdin):
+
+```
+$ pysource -m re.match | vim -
+```
+
+Add `-c 'set ft=python'` for syntax highlighting: `pysource -m re.match | vim - -c 'set ft=python'`.
+
 ### Vim integration
 
-If you want to dump `pysource`'s output to a vertical split window I recommend installing [`ConqueTerm`](https://github.com/gingerhot/conque-term-vim) and then add this to your `.vimrc`:
-
-```
-nmap <leader>s :ConqueTermVSplit pysource -m <C-R><C-A><CR>
-```
-
-Now if you hit `<leader>s` (`,s` in my case as my Vim _leader_ key is `,`) on any object, it will open a split window with the source code (if it can be found, otherwise you will see a `ModuleNotFoundError`).
+If you use [jedi-vim](https://github.com/davidhalter/jedi-vim), you already have source navigation built in — just hit `,s` on an object to jump to its definition, no extra mapping needed.
 
 ## Development
 
