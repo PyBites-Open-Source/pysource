@@ -1,5 +1,7 @@
 import collections
 import datetime
+import decimal
+import sys
 from inspect import getsource
 from os.path import join
 from pathlib import PurePath
@@ -16,6 +18,7 @@ from pysource import (
     get_source,
     print_source,
 )
+from pysource.__main__ import main
 
 
 @pytest.mark.parametrize(
@@ -54,12 +57,39 @@ def test_print_source(func, capfd, source_code):
     assert actual == expected
 
 
-def test_get_source_falls_back_to_pure_python():
-    # datetime.date is a C type whose source lives in _pydatetime
-    source = get_source(datetime.date)
-    assert source.lstrip().startswith("class date")
+def test_get_source_returns_source_for_python_object():
+    assert get_source(get_source).lstrip().startswith("def get_source")
+
+
+@pytest.mark.parametrize(
+    "obj, head",
+    [
+        (datetime.date, "class date"),  # _pydatetime sibling
+        (decimal.Decimal, "class Decimal"),  # _pydecimal sibling
+    ],
+)
+def test_get_source_falls_back_to_pure_python(obj, head):
+    assert get_source(obj).lstrip().startswith(head)
 
 
 def test_get_source_raises_when_no_python_source():
     with pytest.raises(SourceUnavailableError, match="len"):
         get_source(len)
+
+
+def test_get_source_raises_for_object_without_source():
+    with pytest.raises(SourceUnavailableError, match="42"):
+        get_source(42)
+
+
+def test_main_prints_source(monkeypatch, capsys):
+    monkeypatch.setattr(sys, "argv", ["pysource", "-m", "re.match"])
+    main()
+    assert "def match" in capsys.readouterr().out
+
+
+def test_main_exits_with_friendly_error(monkeypatch):
+    monkeypatch.setattr(sys, "argv", ["pysource", "-m", "builtins.len"])
+    with pytest.raises(SystemExit) as exc:
+        main()
+    assert "no Python source available" in str(exc.value)

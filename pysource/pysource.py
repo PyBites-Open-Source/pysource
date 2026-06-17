@@ -1,6 +1,8 @@
 import importlib
 import inspect
+import linecache
 import pydoc
+import re
 
 
 class SourceUnavailableError(Exception):
@@ -17,9 +19,10 @@ def get_object(arg):
 
 
 def _pure_python_source(obj):
-    # Several stdlib modules (datetime, decimal, ...) expose C objects whose
-    # __module__ points at a shim with no source; the Python source lives in a
-    # _py<module> sibling.
+    # A few stdlib modules (datetime, decimal, io) ship a C implementation and
+    # keep the Python source in a _py<module> sibling. The pure objects there
+    # still carry __module__ of the shim, so inspect.getsource looks in the
+    # wrong file; read the sibling file directly instead.
     module_name = getattr(obj, "__module__", None)
     name = getattr(obj, "__name__", None)
     if not module_name or not name:
@@ -28,13 +31,15 @@ def _pure_python_source(obj):
         module = importlib.import_module(f"_py{module_name}")
     except ImportError:
         return None
-    pure = getattr(module, name, None)
-    if pure is None:
+    source_file = getattr(module, "__file__", None)
+    if getattr(module, name, None) is None or source_file is None:
         return None
-    try:
-        return inspect.getsource(pure)
-    except (OSError, TypeError):
-        return None
+    definition = re.compile(rf"^(async\s+def|def|class)\s+{re.escape(name)}\b")
+    lines = linecache.getlines(source_file)
+    for index, line in enumerate(lines):
+        if definition.match(line):
+            return "".join(inspect.getblock(lines[index:]))
+    return None
 
 
 def get_source(obj):
