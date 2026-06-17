@@ -1,0 +1,15 @@
+[[repos]]
+repo = "https://github.com/pre-commit/pre-commit-hooks"
+rev = "v6.0.0"
+hooks = [
+  { id = "check-yaml" },
+  { id = "end-of-file-fixer" },
+]
+
+[[repos]]
+repo = "local"
+hooks = [
+  { id = "ruff-format", name = "ruff format", entry = "uv run ruff format", language = "system", types = ["python"] },
+  { id = "ruff-check", name = "ruff check", entry = "uv run ruff check --fix", language = "system", types = ["python"] },
+  { id = "pyrefly-check", name = "Pyrefly (type checking)", entry = "uv run pyrefly check", language = "system", pass_filenames = false },
+]

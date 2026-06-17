@@ -7,17 +7,21 @@ _Update 5th of Nov 2021_: we did not know it at the time, but this actually can 
 
 ## Installation
 
-You can install `pybites-pysource` from [PyPI](https://pypi.org/project/pybites-pysource/):
+Run it without installing anything using [uv](https://docs.astral.sh/uv/):
 
-    pip install pybites-pysource
+    uvx --from pybites-pysource pysource -m datetime.date
 
-Or use `pipx` if you want to have it available globally.
+To make that an alias, add to your shell config:
 
-This tool uses Python 3.x
+    alias pysource='uvx --from pybites-pysource pysource'
+
+Or install it from [PyPI](https://pypi.org/project/pybites-pysource/):
+
+    uv tool install pybites-pysource
+
+This tool requires Python 3.12+.
 
 ## Usage
-
-You can use `pybites-pysource`:
 
 ```
 $ pysource -m re.match
@@ -25,6 +29,15 @@ def match(pattern, string, flags=0):
 	"""Try to apply the pattern at the start of the string, returning
 	a Match object, or None if no match was found."""
 	return _compile(pattern, flags).match(string)
+```
+
+It also resolves C-implemented stdlib objects by falling back to their pure-Python source:
+
+```
+$ pysource -m datetime.date
+class date:
+    """Concrete date type.
+    ...
 ```
 
 To show the resulting code with paging add `-p` to the `pysource` command, so in this case: `pysource -m re.match -p`.
@@ -41,13 +54,16 @@ nmap <leader>s :ConqueTermVSplit pysource -m <C-R><C-A><CR>
 
 Now if you hit `<leader>s` (`,s` in my case as my Vim _leader_ key is `,`) on any object, it will open a split window with the source code (if it can be found, otherwise you will see a `ModuleNotFoundError`).
 
-## Tests
+## Development
 
-To run the tests:
+This project uses [uv](https://docs.astral.sh/uv/). To set up and run the tests:
 
-	$ python setup.py test
+	$ uv sync
+	$ uv run pytest
 
-See: [Integrating with setuptools / python setup.py test / pytest-runner](https://docs.pytest.org/en/documentation-restructure/background/goodpractices.html#integrating-with-setuptools-python-setup-py-test-pytest-runner).
+Linting, formatting, and type checking run via [prek](https://github.com/j178/prek):
+
+	$ uv run prek run --all-files
 
 ---
 

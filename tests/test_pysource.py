@@ -18,23 +18,29 @@ from pysource import (
 )
 
 
-@pytest.mark.parametrize("arg, expected", [
-    ("random.sample", sample),
-    ("pathlib.PurePath", PurePath),
-    ("os.path.join", join),
-    ("collections", collections),
-])
+@pytest.mark.parametrize(
+    "arg, expected",
+    [
+        ("random.sample", sample),
+        ("pathlib.PurePath", PurePath),
+        ("os.path.join", join),
+        ("collections", collections),
+    ],
+)
 def test_get_object(arg, expected):
     assert get_object(arg) is expected
 
 
-@pytest.mark.parametrize("func", [
-    choice,
-    match,
-    getsource,
-    capwords,
-    this  # works for modules now too
-])
+@pytest.mark.parametrize(
+    "func",
+    [
+        choice,
+        match,
+        getsource,
+        capwords,
+        this,  # works for modules now too
+    ],
+)
 def test_print_source(func, capfd, source_code):
     """pager=True gives the same result in terms of output"""
     print_source(func)

@@ -67,14 +67,10 @@ def capwords(s, sep=None):
     return (sep or ' ').join(x.capitalize() for x in s.split(sep))
 '''
 SOURCE_CODE = dict(
-    choice=choice,
-    match=match,
-    getsource=getsource,
-    this=this,
-    capwords=capwords
+    choice=choice, match=match, getsource=getsource, this=this, capwords=capwords
 )
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def source_code():
     return SOURCE_CODE
