@@ -1,6 +1,7 @@
 import argparse
+import sys
 
-from pysource.pysource import get_object, print_source
+from pysource.pysource import SourceUnavailableError, get_object, print_source
 
 
 def main():
@@ -11,8 +12,11 @@ def main():
                         help='page output (like Unix more command)')
     args = parser.parse_args()
 
-    obj = get_object(args.module)
-    print_source(obj, pager=args.use_pager)
+    try:
+        obj = get_object(args.module)
+        print_source(obj, pager=args.use_pager)
+    except SourceUnavailableError as exc:
+        sys.exit(str(exc))
 
 
 if __name__ == '__main__':

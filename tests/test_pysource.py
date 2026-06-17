@@ -1,4 +1,5 @@
 import collections
+import datetime
 from inspect import getsource
 from os.path import join
 from pathlib import PurePath
@@ -9,7 +10,12 @@ import this
 
 import pytest
 
-from pysource import get_object, print_source
+from pysource import (
+    SourceUnavailableError,
+    get_object,
+    get_source,
+    print_source,
+)
 
 
 @pytest.mark.parametrize("arg, expected", [
@@ -40,3 +46,14 @@ def test_print_source(func, capfd, source_code):
     expected = [line.lstrip() for line in src.splitlines()]
 
     assert actual == expected
+
+
+def test_get_source_falls_back_to_pure_python():
+    # datetime.date is a C type whose source lives in _pydatetime
+    source = get_source(datetime.date)
+    assert source.lstrip().startswith("class date")
+
+
+def test_get_source_raises_when_no_python_source():
+    with pytest.raises(SourceUnavailableError, match="len"):
+        get_source(len)
